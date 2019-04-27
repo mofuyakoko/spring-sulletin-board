@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ログイン画面</title>
+</head>
+<body>
+	<h1>ログイン画面</h1>
+	<form method="post" action="/login">
+		好きな文字を入力<input type="text" name="userText" th:value="${user_text}"/>
+		<input type="submit" value="送信"/>
+	</form>
+	<br>
+	<form method="post" action="/login/db">
+		idを入力<input type="text" name="id" th:value="${user_id}" />
+		<input type="submit" value="送信"/>
+	</form>
+
+</body>
+</html>
