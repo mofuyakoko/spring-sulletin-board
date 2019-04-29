@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"></link>
+	<script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+    <title>新規登録</title>
+  </head>
+<body>
+  <div class="col-sm-5">
+    <div class="page-header">
+      <h1>新規登録</h1>
+    </div>
+    <form method="post" th:action="@{/signup}" th:object="${signupForm}">
+      <table class="table table-bordered table-hover">
+　　　　　<!-- ユーザー名 -->
+        <tr>
+          <th class="active col-sm-3">ユーザーID</th>
+          <td>
+            <div class="form-group" th:classappend="${#fields.hasErrors('userId')}?'has-error'">
+              <input type="text" class="form-control" th:field="*{userId}"/>
+              <span class="text-danger" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId error</span>
+            </div>
+          </td>
+        </tr>
+　　　　　<!-- パスワード -->
+        <tr>
+          <th class="active col-sm-3">パスワード</th>
+          <td>
+            <div class="form-group" th:classappend="${#fields.hasErrors('password')}?'has-error'">
+              <input type="text" class="form-control" th:field="*{password}"/>
+              <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</span>
+            </div>
+          </td>
+        </tr>
+　　　　　<!-- 氏名 -->
+        <tr>
+          <th class="active col-sm-3">氏名</th>
+          <td>
+            <div class="form-group" th:classappend="${#fields.hasErrors('userName')}?'has-error'">
+              <input type="text" class="form-control" th:field="*{userName}"/>
+              <span class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName error</span>
+            </div>
+          </td>
+        </tr>
+　　　　　<!-- 生年月日 -->
+        <tr>
+          <th class="active col-sm-3">生年月日</th>
+          <td>
+            <div class="form-group" th:classappend="${#fields.hasErrors('birthday')}?'has-error'">
+              <input type="text" class="form-control" placeholder="yyyy/MM/dd" th:field="*{birthday}"/>
+              <span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">birthday error</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <input class="btn btn-primary btn-block" type="submit" value="登録"/>
+    </form>
+  </div>
+</body>
+</html>

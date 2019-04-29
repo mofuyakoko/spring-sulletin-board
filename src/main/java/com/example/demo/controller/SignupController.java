@@ -1,0 +1,36 @@
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.demo.domain.model.GroupOrder;
+import com.example.demo.domain.model.SignupForm;
+
+@Controller
+public class SignupController {
+	
+	@GetMapping("/signup")
+	public String getSignUp(@ModelAttribute SignupForm signupForm,Model model) {
+		return "signup";
+	}
+
+	@PostMapping("/signup")
+	public String postSignUp(@ModelAttribute @Validated(GroupOrder.class) SignupForm form
+			,BindingResult bindingResult,Model model) {
+		
+		// 入力チェック
+		if(bindingResult.hasErrors()) {
+			return getSignUp(form,model);
+		}
+		
+		System.out.println(form);
+		
+		// TODO ユーザ情報の登録処理を実装
+		return "redirect:/";
+	}
+}
