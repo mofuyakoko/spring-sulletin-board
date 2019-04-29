@@ -12,17 +12,24 @@ import com.example.demo.domain.LoginDomain;
 import com.example.demo.service.LoginService;
 
 @Controller
-@EnableAutoConfiguration
 public class LoginController {
 
 	@Autowired
 	private LoginService loginService;
 	
+	// 初期遷移 Getリクエスト
 	@GetMapping("/")
 	public String getLogin() {
 		return "login";
 	}
 
+	// 初期遷移 Postリクエスト
+	@PostMapping("/")
+	public String postLogin() {
+		return "login";
+	}
+
+	// ログイン処理
 	@PostMapping("/login")
 	public String postRequest(@RequestParam("userText")String str, Model model) {
 		model.addAttribute("sample", str);
@@ -30,6 +37,7 @@ public class LoginController {
 		return "loginResponse";
 	}
 
+	// DB接続テスト用
 	@PostMapping("/login/db")
 	public String postDbRequest(@RequestParam("id")String str, Model model) {
 
