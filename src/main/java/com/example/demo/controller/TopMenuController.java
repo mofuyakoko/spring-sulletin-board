@@ -13,7 +13,7 @@ public class TopMenuController {
 		
 		// トップ画面のhtmlを読み込ませるようにfragmentを置換する
 		model.addAttribute("contents", "topMenu::menu_contents");
-		return "CommonMenu";
+		return "commonMenu";
 	}
 
 	@PostMapping("/logout")
