@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.LoginDomain;
+import com.example.demo.domain.model.LoginForm;
 import com.example.demo.service.LoginService;
 
 @Controller
@@ -19,22 +23,25 @@ public class LoginController {
 	
 	// 初期遷移 Getリクエスト
 	@GetMapping("/")
-	public String getLogin() {
+	public String getRequest(@ModelAttribute LoginForm loginForm,Model model) {
 		return "login";
 	}
 
-	// 初期遷移 Postリクエスト
-	@PostMapping("/")
-	public String postLogin() {
-		return "login";
+	// アドレス直打用
+	@GetMapping("/login")
+	public String getLogin(@ModelAttribute LoginForm loginForm,Model model) {
+		return "redirect:/";
 	}
 
-	// ログイン処理
+	// ログイン処理 Postリクエスト
 	@PostMapping("/login")
-	public String postRequest(@RequestParam("userText")String str, Model model) {
-		model.addAttribute("sample", str);
+	public String postLogin(@ModelAttribute @Validated LoginForm loginForm,
+			BindingResult bindingResult,Model model) {
 		
-		return "loginResponse";
+		if(bindingResult.hasErrors()) {
+			return getRequest(loginForm,model);
+		}
+		return "redirect:/topMenu";
 	}
 
 	// DB接続テスト用
