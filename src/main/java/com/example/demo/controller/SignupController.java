@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.sql.Timestamp;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,9 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.domain.model.GroupOrder;
 import com.example.demo.domain.model.SignupForm;
+import com.example.demo.domain.model.User;
+import com.example.demo.service.UserService;
 
 @Controller
 public class SignupController {
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/signup")
 	public String getSignUp(@ModelAttribute SignupForm signupForm,Model model) {
@@ -30,7 +38,17 @@ public class SignupController {
 		
 		System.out.println(form);
 		
-		// TODO ユーザ情報の登録処理を実装
+		User user = new User();
+		
+		user.setUserId(form.getUserId());
+		user.setPassword(form.getPassword());
+		user.setUserName(form.getUserName());
+		user.setBirthday(form.getBirthday());
+		user.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+		
+		userService.insertNewUser(user);
+		
 		return "redirect:/";
 	}
 }
