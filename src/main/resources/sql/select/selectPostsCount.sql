@@ -1,0 +1,4 @@
+SELECT
+    COUNT(*)
+FROM
+    TR_POSTS

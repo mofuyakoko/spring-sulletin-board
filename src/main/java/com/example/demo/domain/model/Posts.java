@@ -1,6 +1,6 @@
 package com.example.demo.domain.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -17,5 +17,5 @@ public class Posts {
 	private String post_text;
 	
 	// 投稿日
-	private Date post_date;
+	private Timestamp post_date;
 }

@@ -20,5 +20,4 @@ public class User {
 	private Timestamp createDate;
 	// 更新日
 	private Timestamp updateDate;
-
 }
