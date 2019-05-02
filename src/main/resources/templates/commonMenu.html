@@ -14,7 +14,7 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">投稿サイト</a>
+        <a class="navbar-brand" href="#">掲示板サイト</a>
       </div>
       <form method="post" th:action="@{/logout}">
         <button class="btn btn-link pull-right navbar-brand" type="submit">ログアウト</button>
@@ -26,7 +26,8 @@
    <div class="row">
      <div class="col-sm-2 sidebar">
        <ul class="nav nav-pills nav-stacked">
-         <li role="presentation"><a th:href="@{'/userList'}">ユーザー管理</a></li>
+         <li role="presentation"><a th:href="@{'/topMenu/' +${id}}">トップページ</a></li>
+         <li role="presentation"><a th:href="@{'/userMyPage/' +${id}}">マイページ</a></li>
        </ul>
      </div>
    </div>

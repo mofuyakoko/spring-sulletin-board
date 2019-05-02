@@ -1,11 +1,11 @@
 body {
-	padding-top:50px;
+	padding-top:90px;
 }
 
 .sidebar{
 	position:fixed;
 	display:block;
-	top:50px;
+	top:70px;
 	bottom;0;
 	backgroup-color:#F4F5F7;
 }
@@ -21,4 +21,8 @@ body {
 
 .page-header{
 	magin-top:0px;
+}
+
+.nav{
+	font-size: 12px;
 }

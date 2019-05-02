@@ -32,7 +32,7 @@ public class PostsService {
 		return list;
 	}
 	
-	public int selectCount(){
+	public int selectAllCount(){
 		int count = 0;
 		try {
 			count = dao.count();

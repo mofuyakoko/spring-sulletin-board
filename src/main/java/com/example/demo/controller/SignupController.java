@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,15 +31,13 @@ public class SignupController {
 
 	@PostMapping("/signup")
 	public String postSignUp(@ModelAttribute @Validated(GroupOrder.class) SignupForm form
-			,BindingResult bindingResult,Model model) {
+			,BindingResult bindingResult,Model model)throws DataAccessException, IOException {
 		
 		// 入力チェック
 		if(bindingResult.hasErrors()) {
 			return getSignUp(form,model);
 		}
-		
-		System.out.println(form);
-		
+			
 		User user = new User();
 		
 		user.setUserId(form.getUserId());

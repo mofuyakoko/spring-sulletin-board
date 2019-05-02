@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.LoginDomain;
 import com.example.demo.domain.model.LoginForm;
@@ -31,16 +33,18 @@ public class LoginController {
 	@GetMapping("/login")
 	public String getLogin(@ModelAttribute LoginForm loginForm,Model model) {
 		return "redirect:/";
-	}
 
+	}
 	// ログイン処理 Postリクエスト
 	@PostMapping("/login")
 	public String postLogin(@ModelAttribute @Validated LoginForm loginForm,
-			BindingResult bindingResult,Model model) {
+			BindingResult bindingResult,Model model,RedirectAttributes redirectAttribute) {
 		
 		if(bindingResult.hasErrors()) {
 			return getRequest(loginForm,model);
 		}
+		System.out.println(model);
+		redirectAttribute.addFlashAttribute("id", loginForm.getUserId());
 		return "redirect:/topMenu";
 	}
 

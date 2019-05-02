@@ -1,11 +1,21 @@
 package com.example.demo.domain.model;
 
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import lombok.Data;
 
 @Data
-public class LoginForm {
+@Component
+@Scope(value="session")
+public class LoginForm  implements Serializable{
+	
+	private static final long serialVersionUID = -578833673609264424L;
 
 	// ユーザーid
 	// 必須
