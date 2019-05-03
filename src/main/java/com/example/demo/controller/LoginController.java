@@ -22,6 +22,8 @@ public class LoginController {
 
 	@Autowired
 	private LoginService loginService;
+	@Autowired
+	private LoginForm sessionLoginForm;
 	
 	// 初期遷移 Getリクエスト
 	@GetMapping("/")
@@ -43,8 +45,8 @@ public class LoginController {
 		if(bindingResult.hasErrors()) {
 			return getRequest(loginForm,model);
 		}
+		sessionLoginForm.setUserId(loginForm.getUserId());
 		System.out.println(model);
-		redirectAttribute.addFlashAttribute("id", loginForm.getUserId());
 		return "redirect:/topMenu";
 	}
 

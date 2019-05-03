@@ -9,7 +9,9 @@ import com.example.demo.domain.model.Posts;
 
 public interface PostsDao {
 
-	public int count() throws DataAccessException,IOException;
+	public int countAll() throws DataAccessException,IOException;
+	
+	public int countOneUser(String userId) throws DataAccessException,IOException;
 	
 	public int insertOne(Posts posts) throws DataAccessException,IOException;
 	
@@ -17,9 +19,11 @@ public interface PostsDao {
 	
 	public List<Posts> selectMany() throws DataAccessException,IOException;
 	
+	public List<Posts> selectOneUser(String userId) throws DataAccessException,IOException;
+	
 	public int updateOne(Posts posts) throws DataAccessException,IOException;
 	
-	public int deleteOne(String postId) throws DataAccessException,IOException;
+	public int deleteOne(int postId) throws DataAccessException,IOException;
 	
 	public void postsCsvOut() throws DataAccessException,IOException;
 }

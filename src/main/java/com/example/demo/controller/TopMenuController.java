@@ -1,15 +1,17 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.demo.domain.model.LoginForm;
 import com.example.demo.domain.model.Posts;
@@ -19,67 +21,65 @@ import com.example.demo.service.PostsService;
 public class TopMenuController {
 
 	@Autowired
-	PostsService postsService;
-
+	private PostsService postsService;
+	@Autowired
+	private LoginForm sessionLoginForm;
+	
+	// ログイン画面からの初期遷移
 	@GetMapping("/topMenu")
-	public String getTopMenu(Model model, @ModelAttribute("id") String id) {
+	public String getTopMenu(Model model) throws DataAccessException, IOException {
 
 		// トップ画面のhtmlを読み込ませるようにfragmentを置換する
 		model.addAttribute("contents", "topMenu::menu_contents");
 
 		// 初期表示投稿一覧取得
-		List<Posts> posts = postsService.selectMany();
+		List<Posts> posts = postsService.selectAll();
 		model.addAttribute("postsList", posts);
 
 		// 初期表示用件数取得
 		int count = postsService.selectAllCount();
 		model.addAttribute("postsCount", count);
-
-		// ログインID設定
-		model.addAttribute("id", id);
-
+		
 		return "commonMenu";
 	}
 
-	@GetMapping("/userMyPage/{id:.+}")
-	public String getUserMyPage(Model model, @PathVariable("id") String id) {
+	// 共通メニューからマイページへの遷移
+	@GetMapping("/userMyPage")
+	public String getUserMyPage(Model model) throws DataAccessException, IOException  {
 
 		// トップ画面のhtmlを読み込ませるようにfragmentを置換する
-		model.addAttribute("contents", "topMenu::menu_contents");
+		model.addAttribute("contents", "useMyPage::menu_contents");
+
+		Posts post = new Posts();
+		post.setUser_id(sessionLoginForm.getUserId());
 
 		// 初期表示投稿一覧取得
-		List<Posts> posts = postsService.selectMany();
+		List<Posts> posts = postsService.selectOneUser(post);
 		model.addAttribute("postsList", posts);
 
 		// 初期表示用件数取得
-		int count = postsService.selectAllCount();
+		int count = postsService.selectUserCount(post);
 		model.addAttribute("postsCount", count);
-
-		System.out.println(id);
-		// ログインID設定
-		model.addAttribute("id", id);
 
 		return "commonMenu";
 	}
-
-	@GetMapping("/topMenu/{id:.+}")
-	public String getTopMenuBack(Model model, @PathVariable("id") String id) {
-		// 初期表示投稿一覧取得
-		List<Posts> posts = postsService.selectMany();
-		model.addAttribute("postsList", posts);
-
-		// 初期表示用件数取得
-		int count = postsService.selectAllCount();
-		model.addAttribute("postsCount", count);
-
-		// ログインID設定
-		model.addAttribute("id", id);
+	// マイページから投稿を削除
+	@GetMapping("/userMyPage/delete/{id:.+}")
+	public String getPostDelete(Model model, @PathVariable("id") String postId) throws DataAccessException, IOException  {
 
 		// トップ画面のhtmlを読み込ませるようにfragmentを置換する
-		model.addAttribute("contents", "topMenu::menu_contents");
-		return "commonMenu";
+		model.addAttribute("contents", "useMyPage::menu_contents");
+
+		Posts post = new Posts();
+		post.setPost_id(Integer.valueOf(postId));
+		
+		// ユーザーの削除
+		postsService.deleteOnePost(post);
+
+		return "redirect:/userMyPage";
 	}
 
+	// ログアウト
 	@PostMapping("/logout")
 	public String postLogout(Model model) {
 		return "redirect:/";

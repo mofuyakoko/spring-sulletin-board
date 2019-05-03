@@ -25,8 +25,14 @@ public class PostsDaoImpl implements PostsDao {
 	JdbcTemplate jdbc;
 
 	@Override
-	public int count() throws DataAccessException, IOException {
+	public int countAll() throws DataAccessException, IOException {
 		int count = jdbc.queryForObject(util.readSqlFile("selectPostsCount", DmlType.SELECT), Integer.class);
+		return count;
+	}
+
+	@Override
+	public int countOneUser(String userId) throws DataAccessException, IOException {
+		int count = jdbc.queryForObject(util.readSqlFile("selectPostsCountOneUser", DmlType.SELECT),Integer.class,userId);
 		return count;
 	}
 
@@ -57,6 +63,24 @@ public class PostsDaoImpl implements PostsDao {
 
 		return postsList;
 	}
+	
+	@Override
+	public List<Posts> selectOneUser(String userId) throws DataAccessException, IOException {
+		List<Map<String, Object>> getList = jdbc.queryForList(util.readSqlFile("selectPostsOneUser", DmlType.SELECT),userId);
+		List<Posts> postsList = new ArrayList<>();
+		for (Map<String, Object> map : getList) {
+			Posts posts = new Posts();
+			
+			posts.setPost_id((Integer)map.get("POST_ID"));
+			posts.setUser_id((String)map.get("USER_ID"));
+			posts.setPost_text((String)map.get("POST_TEXT"));
+			posts.setPost_date((Timestamp)map.get("POST_DATE"));
+			
+			postsList.add(posts);
+		}
+
+		return postsList;
+	}
 
 	@Override
 	public int updateOne(Posts posts) throws DataAccessException, IOException {
@@ -64,8 +88,11 @@ public class PostsDaoImpl implements PostsDao {
 	}
 
 	@Override
-	public int deleteOne(String post_id) throws DataAccessException, IOException {
-		return 0;
+	public int deleteOne(int post_id) throws DataAccessException, IOException {
+		String sql = util.readSqlFile("deletePostsOne", DmlType.DELETE);
+		int result = jdbc.update(sql, post_id);
+		return result;
+
 	}
 
 	@Override
@@ -73,5 +100,4 @@ public class PostsDaoImpl implements PostsDao {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
-
 }

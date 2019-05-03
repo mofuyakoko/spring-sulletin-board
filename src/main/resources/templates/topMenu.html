@@ -21,7 +21,9 @@
     		<td th:text="${posts.post_text}"></td>
     	</tr>
     </table>
-    <label th:text="'投稿件数：'+ ${postsCount} + '件'"></label>
+    <div th:if=${postsCount}>
+        <span th:text="'投稿件数：'+ ${postsCount} + '件'"></span>
+    </div>
   </div>
 </body>
 </html>

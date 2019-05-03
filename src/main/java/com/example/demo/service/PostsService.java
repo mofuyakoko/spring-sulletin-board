@@ -16,35 +16,64 @@ public class PostsService {
 
 	@Autowired
 	PostsDao dao;
-	
-	public List<Posts> selectMany(){
+
+	/**
+	 * 投稿を全て取得する
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public List<Posts> selectAll() throws DataAccessException,IOException{
 		List<Posts> list = new ArrayList<>();
-		try {
 			list = dao.selectMany();
 			return list;
-		} catch (DataAccessException e) {
-			//TODO 例外処理あとで実装
-			e.printStackTrace();
-		} catch (IOException e) {
-			//TODO 例外処理あとで実装
-			e.printStackTrace();
-		}
-		return list;
 	}
 	
-	public int selectAllCount(){
+	/**
+	 * ユーザIDに紐づく投稿を全て取得する
+	 * @param post
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public List<Posts> selectOneUser(Posts post) throws DataAccessException,IOException{
+		List<Posts>  list = dao.selectOneUser(post.getUser_id());
+			return list;
+	}
+	
+	/**
+	 * 投稿件数を取得する
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public int selectAllCount() throws DataAccessException, IOException{
 		int count = 0;
-		try {
-			count = dao.count();
+			count = dao.countAll();
 			return count;
-		} catch (DataAccessException e) {
-			//TODO 例外処理あとで実装
-			e.printStackTrace();
-		} catch (IOException e) {
-			//TODO 例外処理あとで実装
-			e.printStackTrace();
-		}
-		return count;
 	}
 
+	/**
+	 * ユーザーIDに紐づく投稿件数を取得する
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public int selectUserCount(Posts post) throws DataAccessException, IOException{
+		int count = 0;
+			count = dao.countOneUser(post.getUser_id());
+			return count;
+	}
+	
+	/**
+	 * post_idに紐づく投稿を削除する
+	 * @param post
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public int deleteOnePost(Posts post) throws DataAccessException,IOException{
+		int count = dao.deleteOne(post.getPost_id());
+		return count;
+	}
 }
