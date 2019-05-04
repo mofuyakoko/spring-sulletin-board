@@ -16,6 +16,8 @@ public class User {
 	private String userName;
 	// 生年月日
 	private Date birthday;
+	// 権限
+	private String role;
 	// 登録日
 	private Timestamp createDate;
 	// 更新日

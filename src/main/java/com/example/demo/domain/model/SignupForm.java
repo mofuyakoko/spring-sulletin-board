@@ -2,6 +2,7 @@ package com.example.demo.domain.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -15,8 +16,9 @@ import lombok.Data;
 public class SignupForm {
 	// ユーザーid
 	// 必須
-	// Email形式
+	// 50文字以下
 	@NotBlank(groups = ValidGroup1.class)
+	@Max(50)
 	private String userId;
 
 	// パスワード

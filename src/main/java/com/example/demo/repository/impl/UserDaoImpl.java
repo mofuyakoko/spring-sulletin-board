@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.model.Posts;
@@ -20,6 +22,8 @@ public class UserDaoImpl implements UserDao {
 	FileIoUtil util;
 	@Autowired
 	JdbcTemplate jdbc;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Override
 	public int count() throws DataAccessException {
@@ -31,8 +35,9 @@ public class UserDaoImpl implements UserDao {
 	public int insertOne(User user) throws DataAccessException, IOException {
 		String sql = util.readSqlFile("insertNewUser", DmlType.INSERT);
 		System.out.println(sql);
-		int result = jdbc.update(sql, user.getUserId(), user.getPassword(), user.getUserName(), user.getBirthday(),
-				user.getCreateDate(), user.getUpdateDate());
+		System.out.println(passwordEncoder.encode(user.getPassword()));
+		int result = jdbc.update(sql, user.getUserId(), passwordEncoder.encode(user.getPassword()), user.getUserName(), user.getBirthday(),
+				user.getRole(),user.getCreateDate(), user.getUpdateDate());
 		return result;
 	}
 

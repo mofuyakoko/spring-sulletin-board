@@ -19,73 +19,87 @@ public class PostsService {
 
 	/**
 	 * 投稿を全て取得する
+	 * 
 	 * @return
 	 * @throws DataAccessException
 	 * @throws IOException
 	 */
-	public List<Posts> selectAll() throws DataAccessException,IOException{
+	public List<Posts> selectAll() throws DataAccessException, IOException {
 		List<Posts> list = new ArrayList<>();
-			list = dao.selectMany();
-			return list;
+		list = dao.selectMany();
+		return list;
 	}
-	
+
 	/**
 	 * ユーザIDに紐づく投稿を全て取得する
+	 * 
 	 * @param post
 	 * @return
 	 * @throws DataAccessException
 	 * @throws IOException
 	 */
-	public List<Posts> selectOneUser(Posts post) throws DataAccessException,IOException{
-		List<Posts>  list = dao.selectOneUser(post.getUser_id());
-			return list;
+	public List<Posts> selectOneUser(Posts post) throws DataAccessException, IOException {
+		List<Posts> list = dao.selectOneUser(post.getUser_id());
+		return list;
 	}
-	
+
 	/**
 	 * 投稿件数を取得する
+	 * 
 	 * @return
 	 * @throws DataAccessException
 	 * @throws IOException
 	 */
-	public int selectAllCount() throws DataAccessException, IOException{
+	public int selectAllCount() throws DataAccessException, IOException {
 		int count = 0;
-			count = dao.countAll();
-			return count;
+		count = dao.countAll();
+		return count;
 	}
 
 	/**
 	 * ユーザーIDに紐づく投稿件数を取得する
+	 * 
 	 * @return
 	 * @throws DataAccessException
 	 * @throws IOException
 	 */
-	public int selectUserCount(Posts post) throws DataAccessException, IOException{
+	public int selectUserCount(Posts post) throws DataAccessException, IOException {
 		int count = 0;
-			count = dao.countOneUser(post.getUser_id());
-			return count;
+		count = dao.countOneUser(post.getUser_id());
+		return count;
 	}
-	
+
 	/**
 	 * post_idに紐づく投稿を削除する
+	 * 
 	 * @param post
 	 * @return
 	 * @throws DataAccessException
 	 * @throws IOException
 	 */
-	public int deleteOnePost(Posts post) throws DataAccessException,IOException{
+	public boolean deleteOnePost(Posts post) throws DataAccessException, IOException {
 		int count = dao.deleteOne(post.getPost_id());
-		return count;
+		boolean result = false;
+		if (count > 0) {
+			result = true;
+		}
+		return result;
 	}
-	
+
 	/**
 	 * 新規投稿を登録する
+	 * 
 	 * @param post
 	 * @return
 	 * @throws DataAccessException
 	 * @throws IOException
 	 */
-	public int insertOnePost(Posts post)throws DataAccessException,IOException{
+	public boolean insertOnePost(Posts post) throws DataAccessException, IOException {
 		int count = dao.insertOne(post);
-		return count;
+		boolean result = false;
+		if (count > 0) {
+			result = true;
+		}
+		return result;
 	}
 }
