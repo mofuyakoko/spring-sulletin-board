@@ -76,4 +76,16 @@ public class PostsService {
 		int count = dao.deleteOne(post.getPost_id());
 		return count;
 	}
+	
+	/**
+	 * 新規投稿を登録する
+	 * @param post
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public int insertOnePost(Posts post)throws DataAccessException,IOException{
+		int count = dao.insertOne(post);
+		return count;
+	}
 }

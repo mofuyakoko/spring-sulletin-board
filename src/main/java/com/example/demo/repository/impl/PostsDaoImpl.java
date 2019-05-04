@@ -38,7 +38,8 @@ public class PostsDaoImpl implements PostsDao {
 
 	@Override
 	public int insertOne(Posts posts) throws DataAccessException, IOException {
-		return 0;
+		int count= jdbc.update(util.readSqlFile("insertPostsOne", DmlType.INSERT),posts.getUser_id(),posts.getPost_text());
+		return count;
 	}
 
 	@Override

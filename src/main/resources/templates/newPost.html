@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"></link>
+	<script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+    <title>新規投稿</title>
+  </head>
+<body>
+<div th:fragment="menu_contents">
+    <div class="page-header">
+      <h1>新規投稿</h1>
+    </div>
+    <form method="post" th:action="@{/newPost}" th:object="${newPostForm}">
+          <label class="">投稿内容</label>
+            <div class="form-group" th:classappend="${#fields.hasErrors('postText')}?'has-error'">
+              <textarea rows="10" cols="60" class="form-control" th:field="*{postText}"></textarea>
+              <span class="text-danger" th:if="${#fields.hasErrors('postText')}" th:errors="*{postText}">postText error</span>
+            </div>
+      <input class="btn btn-primary pull-right" type="submit" value="投稿"/>
+    </form>
+  </div>
+</body>
+</html>
