@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +62,9 @@ public class TopMenuController {
 		int count = postsService.selectUserCount(post);
 		model.addAttribute("postsCount", count);
 		
+		// お試し
+		postsService.writePostsCsvFile(post);
+		
 		return "commonMenu";
 	}
 
@@ -81,6 +87,24 @@ public class TopMenuController {
 			model.addAttribute("queryResult", "投稿の削除が失敗しました");
 		}
 		return "redirect:/userMyPage";
+	}
+	// マイページからCSVファイルをダウンロード
+	@GetMapping("/userMyPage/csv")
+	public ResponseEntity<byte[]> getCsvDownload(Authentication auth,Model model)
+			throws DataAccessException, IOException {
+		
+		byte[] bytes = null;
+		Posts posts = new Posts();
+		posts.setUser_id(auth.getName());
+		
+		// byteデータ抽出処理
+		bytes = postsService.writePostsCsvFile(posts);
+		
+		// レスポンスヘッダー追記処理
+		HttpHeaders header = new HttpHeaders();
+		header.add("Content-Type", "text/csv;charset=UTF-8");
+		header.setContentDispositionFormData("filename", "hoge.csv");
+		return new ResponseEntity<>(bytes,header,HttpStatus.OK);
 	}
 
 	// 共通メニューから新規投稿画面への遷移

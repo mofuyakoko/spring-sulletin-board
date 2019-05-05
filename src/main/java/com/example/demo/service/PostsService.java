@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -101,5 +102,21 @@ public class PostsService {
 			result = true;
 		}
 		return result;
+	}
+	
+	public byte[] writePostsCsvFile(Posts posts) throws DataAccessException, IOException {
+		List<Posts> list = selectOneUser(posts);
+		StringBuffer sb = new StringBuffer();
+		for(Posts post:list) {
+			sb.append(post.getPost_id());
+			sb.append(",");
+			sb.append(post.getUser_id());
+			sb.append(",");
+			sb.append(post.getPost_text());
+			sb.append(",");
+			sb.append(post.getPost_date());
+			sb.append("\n");
+		}
+		return sb.toString().getBytes();
 	}
 }

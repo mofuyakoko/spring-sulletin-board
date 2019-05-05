@@ -19,14 +19,20 @@ import com.example.demo.util.FileIoUtil;
 public class UserDaoImpl implements UserDao {
 
 	@Autowired
-	FileIoUtil util;
+	private FileIoUtil util;
 	@Autowired
-	JdbcTemplate jdbc;
+	private JdbcTemplate jdbc;
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public int count() throws DataAccessException {
+	public int countOne(String userId) throws DataAccessException, IOException  {
+		int count = jdbc.queryForObject(util.readSqlFile("selectUserCountOne", DmlType.SELECT), Integer.class,userId);
+		return count;
+	}
+
+	@Override
+	public int countAll() throws DataAccessException, IOException {
 		// TODO 自動生成されたメソッド・スタブ
 		return 0;
 	}

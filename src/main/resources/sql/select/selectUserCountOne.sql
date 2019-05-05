@@ -1,0 +1,6 @@
+SELECT
+	COUNT(*)
+FROM
+	MS_USER
+WHERE
+	USER_ID = ?

@@ -15,13 +15,34 @@ public class UserService {
 	@Autowired
 	UserDao dao;
 
-	public void insertNewUser(User user) throws DataAccessException, IOException {
-		int insertCnt;
-		insertCnt = dao.insertOne(user);
+	/**
+	 * 新規ユーザーを一件登録する
+	 * @param user
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public boolean insertNewUser(User user) throws DataAccessException, IOException {
+		int insertCnt = dao.insertOne(user);
+		boolean result = false;
 		if (insertCnt > 0) {
-			System.out.println("insert成功");
-		} else {
-			System.out.println("insert失敗");
+			result = true;
 		}
+		return result;
+	}
+	
+	/**
+	 * ユーザーIDに紐づくユーザーが存在しているが確認する。
+	 * @param userId
+	 * @return 
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public boolean countOneUser(User user) throws DataAccessException, IOException{
+		int count = dao.countOne(user.getUserId());
+		boolean result = false;
+		if(count > 0) {
+			result = true;
+		}
+		return result;
 	}
 }

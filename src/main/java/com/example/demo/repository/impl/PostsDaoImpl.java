@@ -20,9 +20,9 @@ import com.example.demo.util.FileIoUtil;
 public class PostsDaoImpl implements PostsDao {
 
 	@Autowired
-	FileIoUtil util;
+	private FileIoUtil util;
 	@Autowired
-	JdbcTemplate jdbc;
+	private JdbcTemplate jdbc;
 
 	@Override
 	public int countAll() throws DataAccessException, IOException {

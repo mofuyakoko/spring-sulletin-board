@@ -3,12 +3,12 @@
 SpringBootを使用した投稿型Webアプリケーション
 
 # 構成
-・アプリケーション  
-Spring Boot 2.1.4  
-Thymeleaf  
+アプリケーション  
+・Spring Boot 2.1.4  
+・Thymeleaf  
 
-・DB  
-PostgreSQL  
+DB  
+・PostgreSQL  
 
 # URL
-https://git.heroku.com/spring-sulletin-board.git
+https://spring-sulletin-board.herokuapp.com

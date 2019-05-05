@@ -30,3 +30,7 @@ body {
 .sm-btn-del {
 	font-size: 1%;
 }
+
+.text-large {
+  font-size: 150%;
+}

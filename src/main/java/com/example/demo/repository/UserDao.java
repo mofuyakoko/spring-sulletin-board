@@ -9,7 +9,9 @@ import com.example.demo.domain.model.User;
 
 public interface UserDao {
 
-	public int count() throws DataAccessException,IOException;
+	public int countAll() throws DataAccessException,IOException;
+	
+	public int countOne(String userId) throws DataAccessException,IOException;
 	
 	public int insertOne(User user) throws DataAccessException,IOException;
 	

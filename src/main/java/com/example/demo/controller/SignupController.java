@@ -40,7 +40,6 @@ public class SignupController {
 		}
 			
 		User user = new User();
-		
 		user.setUserId(form.getUserId());
 		user.setPassword(form.getPassword());
 		user.setUserName(form.getUserName());
@@ -48,6 +47,13 @@ public class SignupController {
 		user.setRole("ROLE_GENERAL");
 		user.setCreateDate(new Timestamp(System.currentTimeMillis()));
 		user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+		
+		boolean result = userService.countOneUser(user);
+		
+		if(result) {
+			model.addAttribute("userIdCheck", true);
+			return getSignUp(form,model);
+		}
 		
 		userService.insertNewUser(user);
 		
