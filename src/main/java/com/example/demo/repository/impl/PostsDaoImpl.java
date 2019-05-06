@@ -37,6 +37,12 @@ public class PostsDaoImpl implements PostsDao {
 	}
 
 	@Override
+	public int countSearch(Posts searchPosts) throws DataAccessException, IOException {
+		int count = jdbc.queryForObject(util.readSqlFile("selectSearchPostsCount", DmlType.SELECT),Integer.class,searchPosts.getUser_id(),searchPosts.getPost_text());
+		return count;
+	}
+
+	@Override
 	public int insertOne(Posts posts) throws DataAccessException, IOException {
 		int count= jdbc.update(util.readSqlFile("insertPostsOne", DmlType.INSERT),posts.getUser_id(),posts.getPost_text());
 		return count;
@@ -50,6 +56,24 @@ public class PostsDaoImpl implements PostsDao {
 	@Override
 	public List<Posts> selectMany() throws DataAccessException, IOException {
 		List<Map<String, Object>> getList = jdbc.queryForList(util.readSqlFile("selectPostsAll", DmlType.SELECT));
+		List<Posts> postsList = new ArrayList<>();
+		for (Map<String, Object> map : getList) {
+			Posts posts = new Posts();
+			
+			posts.setPost_id((long)map.get("POST_ID"));
+			posts.setUser_id((String)map.get("USER_ID"));
+			posts.setPost_text((String)map.get("POST_TEXT"));
+			posts.setPost_date((Timestamp)map.get("POST_DATE"));
+			
+			postsList.add(posts);
+		}
+
+		return postsList;
+	}
+	
+	@Override
+	public List<Posts> selectSearchMany(Posts searchPosts) throws DataAccessException, IOException {
+		List<Map<String, Object>> getList = jdbc.queryForList(util.readSqlFile("selectSearchPostsAll", DmlType.SELECT),searchPosts.getUser_id(),searchPosts.getPost_text());
 		List<Posts> postsList = new ArrayList<>();
 		for (Map<String, Object> map : getList) {
 			Posts posts = new Posts();

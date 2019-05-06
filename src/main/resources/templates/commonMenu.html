@@ -14,8 +14,19 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">掲示板サイト</a>
+        <a class="navbar-brand title-font" href="#">spring-sulletin-board</a>
       </div>
+       <form class="navbar-header navbar-form form-inline" method="get" th:action="@{/searchResult}" th:object="${searchForm}">
+    	<div class="form-group">
+	    	<label class="label control-label">ユーザーID</label>
+	    	<input class="form-control" type="text" placeholder="user(部分一致)" name="userId"/>
+	    </div>
+		<div class="form-group">
+	    	<label class="label control-label">投稿内容</label>
+	    	<input class="form-control" type="text" placeholder="Hello(部分一致)" name="postText"/>
+		</div>
+    	<input class="btn btn-info" type="submit" value="検索"/>
+    </form>
       <form method="post" th:action="@{/logout}">
         <button class="btn btn-link pull-right navbar-brand" type="submit">ログアウト</button>
       </form>

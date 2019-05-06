@@ -3,13 +3,9 @@ package com.example.demo.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +17,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.demo.domain.model.NewPostForm;
 import com.example.demo.domain.model.Posts;
+import com.example.demo.domain.model.SearchForm;
 import com.example.demo.service.PostsService;
 
 @Controller
+@SessionAttributes(names="searchForm")
 public class TopMenuController {
 
 	@Autowired
@@ -48,10 +47,36 @@ public class TopMenuController {
 		List<Posts> posts = postsService.selectAll();
 
 		// ページ生成
-		createPages(page,size,posts,model);
+		postsService.createPages(page,size,posts,model);
 		return "commonMenu";
 	}
 
+	// ログイン画面からの初期遷移
+	@GetMapping("/searchResult")
+	public String getSearchResult(Authentication auth, Model model, @RequestParam("page") Optional<Integer> page,
+			@RequestParam("size") Optional<Integer> size,@ModelAttribute("searchForm") SearchForm searchForm) throws DataAccessException, IOException {
+
+		// トップ画面のhtmlを読み込ませるようにfragmentを置換する
+		model.addAttribute("contents", "serchResultPage::menu_contents");
+		
+		System.out.println(model);
+		System.out.println(searchForm);
+		Posts post = new Posts();
+		post.setUser_id(searchForm.getUserId());
+		post.setPost_text(searchForm.getPostText());
+		
+		// 初期表示用件数取得
+		int count = postsService.selectSearchCount(post);
+		model.addAttribute("postsCount", count);
+
+		// 初期表示投稿一覧取得
+		List<Posts> posts = postsService.selectSearchAll(post);
+
+		// ページ生成
+		postsService.createPages(page,size,posts,model);
+		return "commonMenu";
+	}
+	
 	// 共通メニューからマイページへの遷移
 	@GetMapping("/userMyPage")
 	public String getUserMyPage(Authentication auth, Model model, @RequestParam("page") Optional<Integer> page,
@@ -66,7 +91,7 @@ public class TopMenuController {
 		// 初期表示投稿一覧取得
 		List<Posts> posts = postsService.selectOneUser(post);
 		// ページ生成
-		createPages(page,size,posts,model);
+		postsService.createPages(page,size,posts,model);
 
 		// 初期表示用件数取得
 		int count = postsService.selectUserCount(post);
@@ -142,7 +167,6 @@ public class TopMenuController {
 		} else {
 			model.addAttribute("queryResult", "投稿が失敗しました");
 		}
-
 		return "redirect:/userMyPage";
 	}
 
@@ -152,27 +176,8 @@ public class TopMenuController {
 		return "redirect:/";
 	}
 	
-	/**
-	 * ページ生成処理
-	 * @param page
-	 * @param size
-	 * @param posts
-	 * @param model
-	 */
-	private void createPages(Optional<Integer> page,Optional<Integer> size,List<Posts> posts ,Model model) {
-		// ページ生成
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
-		Page<Posts> postPage = postsService.getPages(PageRequest.of(currentPage - 1, pageSize),posts);
-		
-		model.addAttribute("postPage", postPage);
-		 
-        int totalPages = postPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-	}
+    @ModelAttribute("searchForm")
+    public SearchForm setRequestForm(SearchForm searchForm){
+        return searchForm;
+    }
 }

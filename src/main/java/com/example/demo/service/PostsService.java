@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.example.demo.domain.model.Posts;
 import com.example.demo.repository.PostsDao;
@@ -39,6 +41,18 @@ public class PostsService {
 	public List<Posts> selectAll() throws DataAccessException, IOException {
 		List<Posts> list = new ArrayList<>();
 		list = dao.selectMany();
+		return list;
+	}
+	/**
+	 * 指定条件に一致する投稿を全て取得する
+	 * 
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public List<Posts> selectSearchAll(Posts posts) throws DataAccessException, IOException {
+		List<Posts> list = new ArrayList<>();
+		list = dao.selectSearchMany(posts);
 		return list;
 	}
 
@@ -67,7 +81,19 @@ public class PostsService {
 		count = dao.countAll();
 		return count;
 	}
-
+	/**
+	 * 指定した条件に一致する投稿件数を取得する
+	 * 
+	 * @return
+	 * @throws DataAccessException
+	 * @throws IOException
+	 */
+	public int selectSearchCount(Posts posts) throws DataAccessException, IOException {
+		int count = 0;
+		count = dao.countSearch(posts);
+		return count;
+	}
+	
 	/**
 	 * ユーザーIDに紐づく投稿件数を取得する
 	 * 
@@ -155,7 +181,7 @@ public class PostsService {
 		return sb.toString();
 	}
 	
-	public Page<Posts> getPages(Pageable pageable,List<Posts> postsList){
+	private Page<Posts> getPages(Pageable pageable,List<Posts> postsList){
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
@@ -169,5 +195,29 @@ public class PostsService {
         }
 		Page<Posts> postsPages= new PageImpl<Posts>(displayList, PageRequest.of(currentPage, pageSize), postsList.size());
 		return postsPages;
+	}
+	
+	/**
+	 * ページ生成処理
+	 * @param page
+	 * @param size
+	 * @param posts
+	 * @param model
+	 */
+	public void createPages(Optional<Integer> page,Optional<Integer> size,List<Posts> posts ,Model model) {
+		// ページ生成
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+		Page<Posts> postPage = this.getPages(PageRequest.of(currentPage - 1, pageSize),posts);
+		
+		model.addAttribute("postPage", postPage);
+		 
+        int totalPages = postPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                .boxed()
+                .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
 	}
 }

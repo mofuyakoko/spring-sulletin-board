@@ -12,10 +12,10 @@ public class Posts {
 	
 	// ユーザーID
 	private String user_id;
-	
-	// 投稿テキスト
-	private String post_text;
-	
+
 	// 投稿日
 	private Timestamp post_date;
+
+	// 投稿テキスト
+	private String post_text;
 }

@@ -28,7 +28,7 @@
     	</tr>
     </table>
     <div th:if="${postPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-      <a th:href="@{/topMenu(size=${postPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="${pageNumber==postPage.number + 1} ? active">
+      <a th:href="@{/searchResult(size=${postPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="${pageNumber==postPage.number + 1} ? active">
       </a>
 	</div>
   </div>

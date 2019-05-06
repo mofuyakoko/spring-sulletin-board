@@ -26,4 +26,8 @@ public interface PostsDao {
 	public int deleteOne(long postId) throws DataAccessException,IOException;
 	
 	public void postsCsvOut() throws DataAccessException,IOException;
+
+	List<Posts> selectSearchMany(Posts searchPosts) throws DataAccessException, IOException;
+
+	int countSearch(Posts posts) throws DataAccessException, IOException;
 }

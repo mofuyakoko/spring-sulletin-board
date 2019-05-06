@@ -21,9 +21,7 @@
 	    		<th class="info col-sm-3">投稿内容</th>
 	    		<th class="info col-sm-1"></th>
 	    	</tr>
-		    	<tr th:each="post, iStat :${postPage.content}" 
-		    	  th:style="${iStat.odd}? 'font-weight: bold;'"
-		    	   th:alt-title="${iStat.even}? 'even' : 'odd'">
+		    	<tr th:each="post, iStat :${postPage.content}">
 		    		<td th:text="${post.user_id}"></td>
 		    		<td th:text="${#dates.format(post.post_date,'YYYY/MM/dd HH:mm:ss')}"></td>
 		    		<td th:text="${post.post_text}"></td>
