@@ -19,11 +19,11 @@
        <form class="navbar-header navbar-form form-inline" method="get" th:action="@{/searchResult}" th:object="${searchForm}">
     	<div class="form-group">
 	    	<label class="label control-label">ユーザーID</label>
-	    	<input class="form-control" type="text" placeholder="user(部分一致)" name="userId"/>
+	    	<input class="form-control" type="text" placeholder="user(部分一致)" name="userId" th:field="*{userId}"/>
 	    </div>
 		<div class="form-group">
 	    	<label class="label control-label">投稿内容</label>
-	    	<input class="form-control" type="text" placeholder="Hello(部分一致)" name="postText"/>
+	    	<input class="form-control" type="text" placeholder="Hello(部分一致)" name="postText" th:field="*{postText}"/>
 		</div>
     	<input class="btn btn-info" type="submit" value="検索"/>
     </form>
