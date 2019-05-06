@@ -8,7 +8,7 @@ import lombok.Data;
 public class Posts {
 	
 	// 投稿番号(連番)
-	private int post_id;
+	private long post_id;
 	
 	// ユーザーID
 	private String user_id;

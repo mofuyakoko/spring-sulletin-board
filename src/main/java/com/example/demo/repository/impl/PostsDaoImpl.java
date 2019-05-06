@@ -54,7 +54,7 @@ public class PostsDaoImpl implements PostsDao {
 		for (Map<String, Object> map : getList) {
 			Posts posts = new Posts();
 			
-			posts.setPost_id((Integer)map.get("POST_ID"));
+			posts.setPost_id((long)map.get("POST_ID"));
 			posts.setUser_id((String)map.get("USER_ID"));
 			posts.setPost_text((String)map.get("POST_TEXT"));
 			posts.setPost_date((Timestamp)map.get("POST_DATE"));
@@ -72,7 +72,7 @@ public class PostsDaoImpl implements PostsDao {
 		for (Map<String, Object> map : getList) {
 			Posts posts = new Posts();
 			
-			posts.setPost_id((Integer)map.get("POST_ID"));
+			posts.setPost_id((long)map.get("POST_ID"));
 			posts.setUser_id((String)map.get("USER_ID"));
 			posts.setPost_text((String)map.get("POST_TEXT"));
 			posts.setPost_date((Timestamp)map.get("POST_DATE"));
@@ -89,7 +89,7 @@ public class PostsDaoImpl implements PostsDao {
 	}
 
 	@Override
-	public int deleteOne(int post_id) throws DataAccessException, IOException {
+	public int deleteOne(long post_id) throws DataAccessException, IOException {
 		String sql = util.readSqlFile("deletePostsOne", DmlType.DELETE);
 		int result = jdbc.update(sql, post_id);
 		return result;

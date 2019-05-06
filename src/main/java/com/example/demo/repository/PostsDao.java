@@ -23,7 +23,7 @@ public interface PostsDao {
 	
 	public int updateOne(Posts posts) throws DataAccessException,IOException;
 	
-	public int deleteOne(int postId) throws DataAccessException,IOException;
+	public int deleteOne(long postId) throws DataAccessException,IOException;
 	
 	public void postsCsvOut() throws DataAccessException,IOException;
 }

@@ -12,18 +12,27 @@
     <div th:if=${postsCount}>
       <span th:text="'投稿件数：'+ ${postsCount} + '件'"></span>
     </div>
+    <ul th:if=${postsCount} th:each="page : ${pagesList}" th:object="${pagesList}">
+    	<li th:text="${page}" style="display:inline"></li>
+    </ul>
     <table class="table table-bordered table-hover table-striped">
     	<tr>
     		<th class="info col-sm-1">ユーザー名</th>
     		<th class="info col-sm-1">投稿日</th>
     		<th class="info col-sm-3">投稿内容</th>
     	</tr>
-    	<tr th:each="posts:${postsList}">
-    		<td th:text="${posts.user_id}"></td>
-    		<td th:text="${#dates.format(posts.post_date,'YYYY/MM/dd HH:mm:ss')}"></td>
-    		<td th:text="${posts.post_text}"></td>
+    	<tr th:each="post, iStat :${postPage.content}" 
+    	  th:style="${iStat.odd}? 'font-weight: bold;'"
+    	   th:alt-title="${iStat.even}? 'even' : 'odd'">
+    		<td th:text="${post.user_id}"></td>
+    		<td th:text="${#dates.format(post.post_date,'YYYY/MM/dd HH:mm:ss')}"></td>
+    		<td th:text="${post.post_text}"></td>
     	</tr>
     </table>
+    <div th:if="${postPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+      <a th:href="@{/topMenu(size=${postPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="${pageNumber==postPage.number + 1} ? active">
+      </a>
+	</div>
   </div>
 </body>
 </html>
