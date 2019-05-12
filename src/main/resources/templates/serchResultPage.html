@@ -23,7 +23,7 @@
     	</tr>
     	<tr th:each="post, iStat :${postPage.content}">
     		<td th:text="${post.user_id}"></td>
-    		<td th:text="${#dates.format(post.post_date,'YYYY/MM/dd HH:mm:ss')}"></td>
+    		<td th:text="${#dates.format(#calendars.createForTimeZone(#calendars.year(post.post_date), #calendars.month(post.post_date), #calendars.day(post.post_date), #calendars.hour(post.post_date), #calendars.minute(post.post_date),'UTC'), 'yyyy-MMM-dd HH:mm')}"></td>
     		<td th:text="${post.post_text}"></td>
     	</tr>
     </table>
